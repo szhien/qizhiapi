@@ -38,7 +38,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 盐值，混淆密码
      */
-    public static final String SALT = "yupi";
+    public static final String SALT = "qizhi";
 
     @Override
     public long userRegister(String userAccount, String userPassword, String checkPassword) {
@@ -66,8 +66,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             }
             // 2. 加密
             String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
+
+            //3. 给用户设置accessKey和secretKey
+            String accessKey = DigestUtils.md5DigestAsHex((SALT + userAccount + System.currentTimeMillis()).getBytes());
+            String secretKey = DigestUtils.md5DigestAsHex((SALT + userAccount + System.currentTimeMillis() + SALT).getBytes());
             // 3. 插入数据
             User user = new User();
+            user.setAccessKey(accessKey);
+            user.setSecretKey(secretKey);
             user.setUserAccount(userAccount);
             user.setUserPassword(encryptPassword);
             boolean saveResult = this.save(user);

@@ -49,7 +49,10 @@ public class InterfaceInfoQueryRequest extends PageRequest implements Serializab
      * 状态[0 关闭 1开启]
      */
     private Integer status;
-
+    /**
+     * 请求参数
+     */
+    private String requestParams;
     /**
      * 请求头
      */

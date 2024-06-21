@@ -17,12 +17,13 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @ComponentScan
 public class qizhiapiClientConfig {
+    private String gatewayHost;
     private String accessKey;
     private String secretKey;
 
     @Bean
     public QizhiApiClient qizhiapiClient(){
-        return new QizhiApiClient(accessKey,secretKey);
+        return new QizhiApiClient(gatewayHost,accessKey,secretKey);
     }
 
 }

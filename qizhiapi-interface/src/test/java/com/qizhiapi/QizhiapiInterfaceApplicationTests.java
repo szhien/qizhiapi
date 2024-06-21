@@ -24,7 +24,7 @@ class QizhiapiInterfaceApplicationTests {
 //        );
         User user = new User();
         user.setUsername("zhien");
-        String result3 = apiClient.postName(user);
+        String result3 = apiClient.getUsernameByPost(user);
         System.out.println(result3);
     }
 

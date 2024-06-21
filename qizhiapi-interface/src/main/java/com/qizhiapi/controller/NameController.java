@@ -16,16 +16,16 @@ import javax.servlet.http.HttpServletRequest;
 public class NameController
 {
     @GetMapping("/")
-    public String getName(@RequestParam String name){
+    public String getNameByGet(@RequestParam String name){
         return "使用GET 你的名字是："+name;
     }
     @PostMapping("/")
-    public String postName(@RequestBody String name){
+    public String getNameByPost(@RequestBody String name){
         return "使用POST 你的名字是："+name;
     }
 
     @PostMapping("/user")
-    public String postName(@RequestBody User user, HttpServletRequest request){
+    public String getUsernameByPost(@RequestBody User user, HttpServletRequest request){
         String accessKey = request.getHeader("accessKey");
         String nonce = request.getHeader("nonce");
         String timestamp = request.getHeader("timestamp");

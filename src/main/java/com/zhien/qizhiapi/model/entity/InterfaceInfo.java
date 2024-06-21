@@ -48,6 +48,10 @@ public class InterfaceInfo implements Serializable {
     private Integer status;
 
     /**
+     * 请求参数
+     */
+    private String requestParams;
+    /**
      * 请求头
      */
     private String requestHeader;
