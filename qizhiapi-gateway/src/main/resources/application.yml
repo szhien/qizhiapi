@@ -1,0 +1,47 @@
+server:
+  port: 8090
+
+spring:
+  application:
+  name: zhien-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: api_route
+          uri: http://localhost:8080  # 如果报错 not an SSL/TLS record: 是因为把http写成了https
+          predicates:
+            - Path=/api/**
+          filters:
+            - AddRequestHeader=zhien,shuaipi  # 添加请求头 zhien:shuaipi
+            - AddRequestParameter=name,shenzhienshishuaipi  # 添加请求参数 name:shenzhienshishuaipi
+
+#        - id: zhien-gateway2
+#          uri: http://localhost:8080
+#          predicates:
+#            - Path=/api/**
+#          filters:
+#            - AddRequestHeader=zhien,shuaipi  # 添加请求头 zhien:shuaipi
+#            - AddRequestParameter=name,shenzhienshishuaipi  # 添加请求参数 name:shenzhienshishuaipi
+#            - name: CircuitBreaker
+#                args:
+#                  name: myCircuitBreaker   # 断路器名称
+#                  fallbackUri: forward:/fallback  # 断路器降级地址(转发到/fallback路径，可以自定义的要降级的路径)
+#        - id: zhien-fallback
+#            uri: https://yupi.icu
+#            predicates:
+#              - Path=/fallback
+
+# 开启网关的debug日志
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway: trace
+
+
+
+
+
+
+

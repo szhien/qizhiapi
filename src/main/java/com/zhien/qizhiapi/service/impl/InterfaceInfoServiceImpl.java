@@ -30,12 +30,10 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
         String url = interfaceInfo.getUrl();
         String description = interfaceInfo.getDescription();
         String method = interfaceInfo.getMethod();
-//        Long userId = interfaceInfo.getUserId();
-//        Integer status = interfaceInfo.getStatus();
 
         // 创建时，参数不能为空
         if (add) {
-            ThrowUtils.throwIf(StringUtils.isAnyBlank(name,url,description,method), ErrorCode.PARAMS_ERROR);
+            ThrowUtils.throwIf(StringUtils.isAnyBlank(name,url,description,method), ErrorCode.PARAMS_ERROR,"请求参数不能为空");
         }
         // 有参数则校验
         if (StringUtils.isNotBlank(name) && name.length() > 80) {

@@ -10,7 +10,9 @@ create table if not exists qizhiapi.`interface_info`
     `name` varchar(256) not null comment '接口名',
     `url` varchar(512) not null comment '接口地址',
     `method` varchar(256) not null comment '接口类型',
+    `description` varchar(256) null comment '接口描述',
     `status` int default 0 not null comment '状态[0 关闭 1开启]',
+    `requestParams` text null comment '请求参数',
     `requestHeader` text null comment '请求头',
     `responseHeader` text null comment '响应头',
     `userId` bigint not null comment '创建人',
@@ -39,3 +41,18 @@ insert into qizhiapi.`interface_info` (`name`, `url`, `method`, `status`, `reque
 insert into qizhiapi.`interface_info` (`name`, `url`, `method`, `status`, `requestHeader`, `responseHeader`, `userId`) values ('PF', 'www.jamal-kshlerin.org', '覃天宇', 0, 'Qy2SC', '7u3G', 483631);
 insert into qizhiapi.`interface_info` (`name`, `url`, `method`, `status`, `requestHeader`, `responseHeader`, `userId`) values ('Ql7Ko', 'www.ronald-nolan.org', '武耀杰', 0, 'FjG', 'NOzzi', 91449959);
 insert into qizhiapi.`interface_info` (`name`, `url`, `method`, `status`, `requestHeader`, `responseHeader`, `userId`) values ('DDSx', 'www.refugia-koch.com', '韩炎彬', 0, 'AMJuP', 'Xc', 3922911181);
+
+
+-- 用户调用接口关系表
+create table if not exists qizhiapi.`user_interface_info`
+(
+    `id` bigint not null auto_increment comment '主键' primary key,
+    `userId` bigint not null comment '调用用户id',
+    `interfaceInfoId` bigint not null comment '接口id',
+    `totalNum` int default 0 not null comment '总调用次数',
+    `leftNum` int default 0 not null comment '剩余调用次数',
+    `status` int default 0 not null comment '状态[0-正常 1-禁用]',
+    `createTime` datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    `updateTime` datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    `isDeleted` tinyint default 0 not null comment '是否删除(0-未删, 1-已删)'
+)comment '用户调用关系表';
