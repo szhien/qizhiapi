@@ -1,29 +1,26 @@
 package com.zhien.qizhiapi.controller;
 
-import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.gson.Gson;
-import com.qizhiapi.qizhiapiclientsdk.ApiClient.QizhiApiClient;
 import com.zhien.qizhiapi.annotation.AuthCheck;
-import com.zhien.qizhiapi.common.*;
+import com.zhien.qizhiapi.common.BaseResponse;
+import com.zhien.qizhiapi.common.DeleteRequest;
+import com.zhien.qizhiapi.common.ErrorCode;
+import com.zhien.qizhiapi.common.ResultUtils;
 import com.zhien.qizhiapi.constant.CommonConstant;
 import com.zhien.qizhiapi.constant.UserConstant;
 import com.zhien.qizhiapi.exception.BusinessException;
 import com.zhien.qizhiapi.exception.ThrowUtils;
-
 import com.zhien.qizhiapi.model.dto.userInterfaceInfo.UserInterfaceInfoAddRequest;
 import com.zhien.qizhiapi.model.dto.userInterfaceInfo.UserInterfaceInfoQueryRequest;
 import com.zhien.qizhiapi.model.dto.userInterfaceInfo.UserInterfaceInfoUpdateRequest;
-import com.zhien.qizhiapi.model.entity.User;
-
 import com.zhien.qizhiapi.model.entity.UserInterfaceInfo;
 import com.zhien.qizhiapi.service.UserInterfaceInfoService;
 import com.zhien.qizhiapi.service.UserService;
+import com.zhien.qizhiapicommon.model.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

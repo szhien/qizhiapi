@@ -1,7 +1,8 @@
 package com.zhien.qizhiapi.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zhien.qizhiapi.model.entity.User;
+import com.zhien.qizhiapicommon.model.entity.User;
+
 
 /**
  * 用户数据库操作

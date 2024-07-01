@@ -8,10 +8,10 @@ import com.zhien.qizhiapi.constant.CommonConstant;
 import com.zhien.qizhiapi.exception.BusinessException;
 import com.zhien.qizhiapi.mapper.UserMapper;
 import com.zhien.qizhiapi.model.dto.user.UserQueryRequest;
-import com.zhien.qizhiapi.model.entity.User;
+
+
 import com.zhien.qizhiapi.model.enums.UserRoleEnum;
 import com.zhien.qizhiapi.model.vo.LoginUserVO;
-import com.zhien.qizhiapi.model.vo.UserVO;
 import com.zhien.qizhiapi.service.UserService;
 import com.zhien.qizhiapi.utils.SqlUtils;
 import java.util.ArrayList;
@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import com.zhien.qizhiapi.constant.UserConstant;
+import com.zhien.qizhiapicommon.model.entity.User;
+import com.zhien.qizhiapicommon.model.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -232,7 +234,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public UserVO getUserVO(User user) {
+    public com.zhien.qizhiapicommon.model.vo.UserVO getUserVO(User user) {
         if (user == null) {
             return null;
         }

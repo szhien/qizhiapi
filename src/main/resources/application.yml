@@ -43,7 +43,7 @@ spring:
       max-file-size: 10MB
 server:
   address: 0.0.0.0
-  port: 8002
+  port: 8888
   servlet:
     context-path: /api
     # cookie 30 天过期
@@ -65,7 +65,7 @@ qizhiapi:
   client:
     access-key: zhien
     secret-key: abcdefgh
-    gateway-host: http://localhost:8080  # 对应提供 API服务的网关地址，按照道理讲这里不应该由用户设置，主要是方便，好像也没啥用
+    #gateway-host: http://localhost:8080  # 对应提供 API服务的网关地址，按照道理讲这里不应该由用户设置，主要是方便，好像也没啥用
 
 # 微信相关
 wx:
@@ -109,3 +109,18 @@ knife4j:
           - com.zhien.qizhiapi.controller
 
 
+dubbo:
+  application:
+    name: dubbo-springboot-demo-provider
+  protocol:
+    name: dubbo
+    port: 8200   # -1 表示随机端口
+  registry:
+    id: nacos-registry
+    address: nacos://192.168.88.1:8848
+  discovery:
+    address: nacos://192.168.88.1:8848
+  config-center: # 可选
+    address: nacos://192.168.88.1:8848
+  metadata-report: # 可选
+    address: nacos://192.168.88.1:8848

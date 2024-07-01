@@ -1,7 +1,7 @@
 package com.zhien.qizhiapi.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zhien.qizhiapi.model.entity.InterfaceInfo;
+import com.zhien.qizhiapicommon.model.entity.InterfaceInfo;
 
 /**
 * @author zhien

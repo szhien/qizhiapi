@@ -16,9 +16,7 @@ import com.zhien.qizhiapi.model.dto.user.UserQueryRequest;
 import com.zhien.qizhiapi.model.dto.user.UserRegisterRequest;
 import com.zhien.qizhiapi.model.dto.user.UserUpdateMyRequest;
 import com.zhien.qizhiapi.model.dto.user.UserUpdateRequest;
-import com.zhien.qizhiapi.model.entity.User;
 import com.zhien.qizhiapi.model.vo.LoginUserVO;
-import com.zhien.qizhiapi.model.vo.UserVO;
 import com.zhien.qizhiapi.service.UserService;
 
 import java.util.List;
@@ -26,6 +24,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.zhien.qizhiapicommon.model.entity.User;
+import com.zhien.qizhiapicommon.model.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import me.chanjar.weixin.common.bean.oauth2.WxOAuth2AccessToken;

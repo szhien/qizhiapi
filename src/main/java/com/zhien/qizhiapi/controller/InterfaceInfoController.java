@@ -16,14 +16,11 @@ import com.zhien.qizhiapi.model.dto.interfaceInfo.InterfaceInfoAddRequest;
 import com.zhien.qizhiapi.model.dto.interfaceInfo.InterfaceInfoInvokeRequest;
 import com.zhien.qizhiapi.model.dto.interfaceInfo.InterfaceInfoQueryRequest;
 import com.zhien.qizhiapi.model.dto.interfaceInfo.InterfaceInfoUpdateRequest;
-import com.zhien.qizhiapi.model.dto.userInterfaceInfo.UserInterfaceInfoAddRequest;
-import com.zhien.qizhiapi.model.dto.userInterfaceInfo.UserInterfaceInfoQueryRequest;
-import com.zhien.qizhiapi.model.dto.userInterfaceInfo.UserInterfaceInfoUpdateRequest;
-import com.zhien.qizhiapi.model.entity.InterfaceInfo;
-import com.zhien.qizhiapi.model.entity.User;
-import com.zhien.qizhiapi.model.enums.InterfaceInfoStatusEnum;
 import com.zhien.qizhiapi.service.InterfaceInfoService;
 import com.zhien.qizhiapi.service.UserService;
+import com.zhien.qizhiapicommon.model.entity.InterfaceInfo;
+import com.zhien.qizhiapicommon.model.entity.User;
+import com.zhien.qizhiapicommon.model.enums.InterfaceInfoStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -292,7 +289,7 @@ public class InterfaceInfoController {
         Gson gson = new Gson();
         com.qizhiapi.qizhiapiclientsdk.entity.User user = gson.fromJson(userRequestParams, com.qizhiapi.qizhiapiclientsdk.entity.User.class);
         //根据当前登录的用户设置调用client
-        QizhiApiClient tempClient = new QizhiApiClient("http://localhost:8080",accessKey,secretKey);
+        QizhiApiClient tempClient = new QizhiApiClient(accessKey,secretKey);
         String usernameByPost = tempClient.getUsernameByPost(user);
         return ResultUtils.success(usernameByPost);
     }

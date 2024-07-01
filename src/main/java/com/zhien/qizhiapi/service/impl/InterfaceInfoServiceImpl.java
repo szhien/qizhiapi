@@ -5,9 +5,8 @@ import com.zhien.qizhiapi.common.ErrorCode;
 import com.zhien.qizhiapi.exception.BusinessException;
 import com.zhien.qizhiapi.exception.ThrowUtils;
 import com.zhien.qizhiapi.mapper.InterfaceInfoMapper;
-import com.zhien.qizhiapi.model.entity.InterfaceInfo;
 import com.zhien.qizhiapi.service.InterfaceInfoService;
-import com.zhien.qizhiapi.service.UserService;
+import com.zhien.qizhiapicommon.model.entity.InterfaceInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +39,6 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "接口名过长");
         }
     }
-
 }
 
 
