@@ -1,12 +1,8 @@
 package com.zhien.qizhiapi.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zhien.qizhiapi.model.dto.post.PostQueryRequest;
-import com.zhien.qizhiapi.model.entity.InterfaceInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.zhien.qizhiapi.model.entity.Post;
-import com.zhien.qizhiapi.model.vo.PostVO;
+import com.zhien.qizhiapicommon.model.entity.InterfaceInfo;
+
 
 import javax.servlet.http.HttpServletRequest;
 

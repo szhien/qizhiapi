@@ -3,25 +3,28 @@ package com.zhien.qizhiapi.controller;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
+import com.qizhiapi.qizhiapiclientsdk.ApiClient.QizhiApiClient;
+
 import com.zhien.qizhiapi.annotation.AuthCheck;
-import com.zhien.qizhiapi.common.BaseResponse;
-import com.zhien.qizhiapi.common.DeleteRequest;
-import com.zhien.qizhiapi.common.ErrorCode;
-import com.zhien.qizhiapi.common.ResultUtils;
+import com.zhien.qizhiapi.common.*;
 import com.zhien.qizhiapi.constant.CommonConstant;
 import com.zhien.qizhiapi.constant.UserConstant;
 import com.zhien.qizhiapi.exception.BusinessException;
 import com.zhien.qizhiapi.exception.ThrowUtils;
 import com.zhien.qizhiapi.model.dto.interfaceInfo.InterfaceInfoAddRequest;
+import com.zhien.qizhiapi.model.dto.interfaceInfo.InterfaceInfoInvokeRequest;
 import com.zhien.qizhiapi.model.dto.interfaceInfo.InterfaceInfoQueryRequest;
 import com.zhien.qizhiapi.model.dto.interfaceInfo.InterfaceInfoUpdateRequest;
-import com.zhien.qizhiapi.model.entity.InterfaceInfo;
-import com.zhien.qizhiapi.model.entity.User;
 import com.zhien.qizhiapi.service.InterfaceInfoService;
 import com.zhien.qizhiapi.service.UserService;
+import com.zhien.qizhiapicommon.model.entity.InterfaceInfo;
+import com.zhien.qizhiapicommon.model.entity.User;
+import com.zhien.qizhiapicommon.model.enums.InterfaceInfoStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -29,8 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * 帖子接口
- *
+ * 接口管理
  * @author zhien
  */
 @RestController
@@ -44,7 +46,8 @@ public class InterfaceInfoController {
     @Resource
     private UserService userService;
 
-    // region 增删改查
+    @Autowired
+    private QizhiApiClient qizhiApiClient;
 
     /**
      * 创建
@@ -149,7 +152,7 @@ public class InterfaceInfoController {
      * @param interfaceInfoQueryRequest
      * @return
      */
-    @AuthCheck(mustRole = "admin")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @GetMapping("/list")
     public BaseResponse<List<InterfaceInfo>> listInterfaceInfo(InterfaceInfoQueryRequest interfaceInfoQueryRequest) {
         InterfaceInfo interfaceInfoQuery = new InterfaceInfo();
@@ -161,10 +164,6 @@ public class InterfaceInfoController {
         return ResultUtils.success(interfaceInfoList);
     }
 
-
-
-
-  
     /**
      * 分页获取列表
      *
@@ -197,4 +196,102 @@ public class InterfaceInfoController {
         Page<InterfaceInfo> interfaceInfoPage = interfaceInfoService.page(new Page<>(current, size), queryWrapper);
         return ResultUtils.success(interfaceInfoPage);
     }
+
+
+    /**
+     * 接口上线（仅管理员）
+     *
+     * @param idRequest
+     * @return
+     */
+    @PostMapping("/online")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> onlineInterfaceInfo(@RequestBody IdRequest idRequest) {
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        long id = idRequest.getId();
+        // 1.校验该接口是否存在
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        ThrowUtils.throwIf(oldInterfaceInfo == null, ErrorCode.NOT_FOUND_ERROR);
+
+        //2.判断该接口是否可以调用
+        com.qizhiapi.qizhiapiclientsdk.entity.User user = new com.qizhiapi.qizhiapiclientsdk.entity.User();
+        user.setUsername("zhien");
+        String resultJson = qizhiApiClient.getUsernameByPost(user);
+        System.out.printf("响应返回的结果：", resultJson);
+        if (StringUtils.isBlank(resultJson)) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR,"接口验证错误！");
+        }
+        //3.修改接口数据库中状态字段为1
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        interfaceInfo.setId(id);
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.ONLINE.getValue());
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        return ResultUtils.success(result);
+    }
+
+
+    /**
+     * 接口下线（仅管理员）
+     *
+     * @param idRequest
+     * @return
+     */
+    @PostMapping("/offline")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> offlineInterfaceInfo(@RequestBody IdRequest idRequest) {
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        long id = idRequest.getId();
+        // 1.校验该接口是否存在
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        ThrowUtils.throwIf(oldInterfaceInfo == null, ErrorCode.NOT_FOUND_ERROR);
+        //2.修改接口数据库中状态字段为 0
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        interfaceInfo.setId(id);
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getValue());
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        return ResultUtils.success(result);
+    }
+
+    /**
+     * 接口调用
+     *
+     * @param interfaceInfoInvokeRequest
+     * @return
+     */
+    @PostMapping("/invoke")
+    public BaseResponse<Object> offlineInterfaceInfo(@RequestBody InterfaceInfoInvokeRequest interfaceInfoInvokeRequest,
+                                                      HttpServletRequest request) {
+        if (interfaceInfoInvokeRequest == null || interfaceInfoInvokeRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        long id = interfaceInfoInvokeRequest.getId();
+        String userRequestParams = interfaceInfoInvokeRequest.getUserRequestParams();
+        if (userRequestParams == null){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"调用接口参数不能为空！");
+        }
+        //判断当前接口是否开启
+        InterfaceInfo interfaceInfo = interfaceInfoService.getById(id);
+        if (interfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        if (interfaceInfo.getStatus() != InterfaceInfoStatusEnum.ONLINE.getValue()){
+            throw new BusinessException(ErrorCode.OPERATION_ERROR,"接口已关闭！");
+        }
+        //调用接口，但是不能使用管理员的权限，要使用当前登录用户的权限调用
+        User loginUser = userService.getLoginUser(request);
+        String accessKey = loginUser.getAccessKey();
+        String secretKey = loginUser.getSecretKey();
+        //解构请求参数到user中
+        Gson gson = new Gson();
+        com.qizhiapi.qizhiapiclientsdk.entity.User user = gson.fromJson(userRequestParams, com.qizhiapi.qizhiapiclientsdk.entity.User.class);
+        //根据当前登录的用户设置调用client
+        QizhiApiClient tempClient = new QizhiApiClient(accessKey,secretKey);
+        String usernameByPost = tempClient.getUsernameByPost(user);
+        return ResultUtils.success(usernameByPost);
+    }
+
 }

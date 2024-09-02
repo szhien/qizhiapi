@@ -2,14 +2,11 @@ package com.zhien.qizhiapi.model.dto.interfaceInfo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.zhien.qizhiapi.common.PageRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 
 /**
  * 查询请求
@@ -49,7 +46,10 @@ public class InterfaceInfoQueryRequest extends PageRequest implements Serializab
      * 状态[0 关闭 1开启]
      */
     private Integer status;
-
+    /**
+     * 请求参数
+     */
+    private String requestParams;
     /**
      * 请求头
      */

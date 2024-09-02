@@ -1,0 +1,2 @@
+# spring boot start ?factories??
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.qizhiapi.qizhiapiclientsdk.qizhiapiClientConfig

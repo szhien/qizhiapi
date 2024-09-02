@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: qizhiapi-interface
+  profiles:
+    active: dev
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# 引入自定义Client的SDK，配置
+qizhiapi:
+  client:
+    access-key: zhien     # AccessKey
+    secret-key: abcdefgh # SecretKey 秘钥
+
+

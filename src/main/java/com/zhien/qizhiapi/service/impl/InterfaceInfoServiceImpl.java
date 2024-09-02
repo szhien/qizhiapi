@@ -5,9 +5,8 @@ import com.zhien.qizhiapi.common.ErrorCode;
 import com.zhien.qizhiapi.exception.BusinessException;
 import com.zhien.qizhiapi.exception.ThrowUtils;
 import com.zhien.qizhiapi.mapper.InterfaceInfoMapper;
-import com.zhien.qizhiapi.model.entity.InterfaceInfo;
 import com.zhien.qizhiapi.service.InterfaceInfoService;
-import com.zhien.qizhiapi.service.UserService;
+import com.zhien.qizhiapicommon.model.entity.InterfaceInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -30,19 +29,16 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
         String url = interfaceInfo.getUrl();
         String description = interfaceInfo.getDescription();
         String method = interfaceInfo.getMethod();
-//        Long userId = interfaceInfo.getUserId();
-//        Integer status = interfaceInfo.getStatus();
 
         // 创建时，参数不能为空
         if (add) {
-            ThrowUtils.throwIf(StringUtils.isAnyBlank(name,url,description,method), ErrorCode.PARAMS_ERROR);
+            ThrowUtils.throwIf(StringUtils.isAnyBlank(name,url,description,method), ErrorCode.PARAMS_ERROR,"请求参数不能为空");
         }
         // 有参数则校验
         if (StringUtils.isNotBlank(name) && name.length() > 80) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "接口名过长");
         }
     }
-
 }
 
 

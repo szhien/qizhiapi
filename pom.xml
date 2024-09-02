@@ -13,10 +13,70 @@
     <artifactId>qizhiapi-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>qizhiapi-backend</name>
+
     <properties>
         <java.version>1.8</java.version>
+        <dubbo.version>3.0.9</dubbo.version>
+        <spring.cloud.nacos.version>2021.0.4.0</spring.cloud.nacos.version><!--2.2.6.RELEASE-->
+        <spring.cloud.dubbo.version>3.1.2</spring.cloud.dubbo.version>
+        <nacos.version>2.1.1</nacos.version>
     </properties>
     <dependencies>
+        <!--引入自定义的Client的SDK依赖包-->
+        <dependency>
+            <groupId>com.qizhiapi</groupId>
+            <artifactId>qizhiapi-client-sdk</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zhien</groupId>
+            <artifactId>qizhiapi-common</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+        <!--Dubbo 整合SpringBoot-->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.dubbo</groupId>-->
+<!--            <artifactId>dubbo-spring-boot-starter</artifactId>-->
+<!--            <version>${spring.cloud.dubbo.version}</version>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>${dubbo.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
+        <!--Nacos客户端依赖-->
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-client</artifactId>
+            <version>${nacos.version}</version>
+        </dependency>
+        <!--集成Nacos实现服务注册与发现-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <version>${spring.cloud.nacos.version}</version>
+        </dependency>
+        <!--集成Nacos实现动态配置管理-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+            <version>${spring.cloud.nacos.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
